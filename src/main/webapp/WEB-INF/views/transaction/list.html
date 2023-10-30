@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transaction history</title>
+    <th:block th:replace="layout/head :: head"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand">Transaction history</a>
+                <div class="d-flex" style="gap: 10px;">
+                    <a href="/customers">
+                        <button class="btn btn-outline-light" type="button">
+                            <i class="fas fa-list-ul"></i>
+                            Customers list
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="content">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Sender Name</th>
+                <th>Recipient Name </th>
+                <th>Date Time</th>
+                <th>Fee Amount</th>
+                <th>Transfer Amount</th>
+                <th>Transaction Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="item : ${transactions}">
+                <tr>
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.sender.fullName}"></td>
+                    <td th:text="${item.recipient.fullName}"></td>
+                    <td th:text="${item.dateTime}" class="datetime"></td>
+                    <td th:text="${item.feeAmount}"></td>
+                    <td th:text="${item.transferAmount}"></td>
+                    <td th:text="${item.transactionAmount}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+<th:block th:if="${success == true}">
+    <footer class="container-fluid success">
+        <div class="container">
+            <div class="notification">
+                <p class="success" th:text="${message}"></p>
+            </div>
+        </div>
+    </footer>
+</th:block>
+
+<th:block th:if="${success == false}">
+    <footer class="container-fluid error">
+        <div class="container">
+            <div class="notification">
+                <p class="error" th:text="${message}"></p>
+            </div>
+        </div>
+    </footer>
+</th:block>
+</body>
+<script src="/assets/js/moment.js" ></script>
+<script>
+    var datetimeElements = document.querySelectorAll(".datetime");
+    datetimeElements.forEach(function(element) {
+        var localDateTime = element.textContent;
+        var formattedDateTime = moment(localDateTime).format("DD-MM-YYYY HH:mm:ss");
+        element.textContent = formattedDateTime;
+    });
+</script>
+</html>
